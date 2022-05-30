@@ -24,7 +24,8 @@ database_path = os.environ['DATABASE_URL']
 app.config["SQLALCHEMY_DATABASE_URI"] = database_path
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app) 
-    
+
+db.create_all()
 
 # # Remove tracking modifications
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"

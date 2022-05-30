@@ -2,9 +2,9 @@ from flask import Flask, render_template, jsonify, redirect
 import numpy as np
 import pandas as pd
 import sqlalchemy
-from sqlalchemy.ext.automap import automap_base
+from sqlalchemy.ext.automap import automap_base 
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine
 # from config import p_key
 # from flask_sqlalchemy import SQLAlchemy
 import os
@@ -17,8 +17,14 @@ import ml_script
 #################################################
 app = Flask(__name__)
 
-# default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/housingnew'
-database_path = os.getenv('DATABASE_URL')
+
+DATABASE_URL = os.environ['DATABASE_URL']
+database_path = psycopg2.connect(DATABASE_URL, sslmode='require')
+
+
+# default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/d4na7qp9ullv0m'
+# default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/d4na7qp9ullv0m'
+#database_path = os.getenv('DATABASE_URL')
 #, default_database_path)
 
 # database_path = os.environ['DATABASE_URL']

@@ -15,12 +15,29 @@ import ml_script
 # Flask Setup
 #################################################
 
+
 app = Flask(__name__)
 
 # default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/housing3'
 # database_path = os.getenv('DATABASE_URL', default_database_path)
 database_path = os.environ['DATABASE_URL']
-SQLALCHEMY_DATABASE_URI = database_path
+app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+db = SQLAlchemy(app) 
+    
+
+# # Remove tracking modifications
+# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+# db = SQLAlchemy(app)
+
+# Pet = create_classes(db)
+
+
+
+
+
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI, echo = False) 
 connection = engine.connect()
@@ -57,7 +74,6 @@ data5.to_sql('linreg', if_exists='replace', index=True, con=connection, method='
 connection.execute('ALTER TABLE "linreg" ADD PRIMARY KEY ("index");')
 
 # connection.close()
-
 
 
 #################################################
@@ -101,30 +117,6 @@ def linear():
      
     return render_template("index2.html")
 
-# @app.route("/updatedata")
-# def newdata():
-   
-#     data1, df_elbow = ml_script.cluster_info(data_base)
-#     data3, data5 = ml_script.cluster_info(data_base)
-
-#     engine = create_engine('DATABASE_URL', echo = False) 
-#     connection = engine.connect()
-    
-#     data1.to_sql('clusterA',  if_exists='replace', index=True, con=connection, method='multi')
-#     connection.execute('ALTER TABLE "clusterA" ADD PRIMARY KEY ("index");')
-
-#     df_elbow.to_sql('elbow',  if_exists='replace', index=True, con=connection, method='multi')
-#     connection.execute('ALTER TABLE "elbow" ADD PRIMARY KEY ("index");')
-    
-#     data3.to_sql('line', if_exists='replace', index=True, con=connection, method='multi')
-#     connection.execute('ALTER TABLE "line" ADD PRIMARY KEY ("index");')
-    
-#     data5.to_sql('linreg', if_exists='replace', index=True, con=connection, method='multi')
-#     connection.execute('ALTER TABLE "linreg" ADD PRIMARY KEY ("index");')
-    
-    
-    
-#     return home()
 
 @app.route("/api/cluster")
 def cluster():

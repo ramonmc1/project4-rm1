@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, redirect
 import numpy as np
 import pandas as pd
 import sqlalchemy
@@ -47,23 +47,17 @@ app = Flask(__name__)
 # Database Setup
 #################################################
 engine = create_engine('sqlite:///housing.db', echo=False)
-connection = engine.connect()
 
-data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)
-# connection.execute('ALTER TABLE "clusterA" ADD PRIMARY KEY ("index");')
+#################################################
+# INITIAL RUN ONLY - create database tables
+#################################################
 
-df_elbow.to_sql('elbow',  if_exists='replace', index=False, con=connection)
-# connection.execute('ALTER TABLE "elbow" ADD PRIMARY KEY ("index");')
-
-data3.to_sql('line', if_exists='replace', index=False, con=connection)
-# connection.execute('ALTER TABLE "line" ADD PRIMARY KEY ("index");')
-
-data5.to_sql('linreg', if_exists='replace', index=False, con=connection)
-# connection.execute('ALTER TABLE "linreg" ADD PRIMARY KEY ("index");')
-
-connection.close()
-
-
+# connection = engine.connect()
+# data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)
+# df_elbow.to_sql('elbow',  if_exists='replace', index=False, con=connection)
+# data3.to_sql('line', if_exists='replace', index=False, con=connection)
+# data5.to_sql('linreg', if_exists='replace', index=False, con=connection)
+# connection.close()
 
 
 #################################################
@@ -79,18 +73,13 @@ def home():
 
 @app.route("/load")
 def load():
-
+  connection = engine.connect()
   data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)
-  # connection.execute('ALTER TABLE "clusterA" ADD PRIMARY KEY ("index");')
-
   df_elbow.to_sql('elbow',  if_exists='replace', index=False, con=connection)
-  # connection.execute('ALTER TABLE "elbow" ADD PRIMARY KEY ("index");')
-
   data3.to_sql('line', if_exists='replace', index=False, con=connection)
-  # connection.execute('ALTER TABLE "line" ADD PRIMARY KEY ("index");')
-
   data5.to_sql('linreg', if_exists='replace', index=False, con=connection)
-
+  connection.close()
+  return redirect("/", code=302)
 
 @app.route("/unsup")
 def unsup():

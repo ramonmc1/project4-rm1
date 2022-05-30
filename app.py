@@ -76,7 +76,7 @@ def load():
 #################################################
 # Storing Data in SQL Tables
 #################################################  
-  
+  engine = create_engine('sqlite:///housingnew.db', echo=False)
   connection = engine.connect()
 
   data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)

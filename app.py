@@ -18,7 +18,8 @@ import ml_script
 app = Flask(__name__)
 
 # default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/housing3'
-database_path = os.getenv('DATABASE_URL', default_database_path)
+# database_path = os.getenv('DATABASE_URL', default_database_path)
+database_path = os.environ['DATABASE_URL']
 SQLALCHEMY_DATABASE_URI = database_path
 
 engine = create_engine(SQLALCHEMY_DATABASE_URI, echo = False) 

@@ -11,14 +11,6 @@ import os
 import psycopg2
 import ml_script
 
-#################################################
-# Running Machine Learning Script - Returning Tables
-#################################################
-
-data_base = ml_script.data_info()
-data1, df_elbow = ml_script.cluster_info(data_base)
-data3, data5 = ml_script.line_info(data_base)
-
 
 #################################################
 # Flask Setup
@@ -64,7 +56,6 @@ engine = create_engine('sqlite:///housing.db', echo=False)
 # Flask Routes
 #################################################
 
-
 @app.route("/")
 def home():
   
@@ -73,11 +64,26 @@ def home():
 
 @app.route("/load")
 def load():
+  
+#################################################
+# Running Machine Learning Script - Returning Tables
+#################################################
+  
+  data_base = ml_script.data_info()
+  data1, df_elbow = ml_script.cluster_info(data_base)
+  data3, data5 = ml_script.line_info(data_base) 
+
+#################################################
+# Storing Data in SQL Tables
+#################################################  
+  
   connection = engine.connect()
+
   data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)
   df_elbow.to_sql('elbow',  if_exists='replace', index=False, con=connection)
   data3.to_sql('line', if_exists='replace', index=False, con=connection)
   data5.to_sql('linreg', if_exists='replace', index=False, con=connection)
+  
   connection.close()
   return redirect("/", code=302)
 

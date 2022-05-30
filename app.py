@@ -6,7 +6,7 @@ from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
 from config import p_key
-from flask_sqlalchemy import SQLAlchemy
+# from flask_sqlalchemy import SQLAlchemy
 import os
 import psycopg2
 import ml_script
@@ -21,15 +21,15 @@ default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/housingnew
 database_path = os.getenv('DATABASE_URL', default_database_path)
 
 # database_path = os.environ['DATABASE_URL']
-app.config["SQLALCHEMY_DATABASE_URI"] = database_path
+# app.config["SQLALCHEMY_DATABASE_URI"] = database_path
 
-# db = SQLAlchemy(app) 
+
 
 # app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') 
 # or "sqlite:///db.sqlite"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-#db = SQLAlchemy(app)
+# db = SQLAlchemy(app)
 # Pet = create_classes(db)
 
 
@@ -37,18 +37,8 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 #################################################
 # Database Setup
 #################################################
+
 engine = create_engine(database_path, echo=False)
-
-#################################################
-# INITIAL RUN ONLY - create database tables
-#################################################
-
-# connection = engine.connect()
-# data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)
-# df_elbow.to_sql('elbow',  if_exists='replace', index=False, con=connection)
-# data3.to_sql('line', if_exists='replace', index=False, con=connection)
-# data5.to_sql('linreg', if_exists='replace', index=False, con=connection)
-# connection.close()
 
 
 #################################################
@@ -75,7 +65,7 @@ def load():
 #################################################
 # Storing Data in SQL Tables
 #################################################  
-  # engine = create_engine('sqlite:///housingnew.db', echo=False)
+
   connection = engine.connect()
 
   data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)

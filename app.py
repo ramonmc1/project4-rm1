@@ -25,12 +25,11 @@ app = Flask(__name__)
 # app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 # db = SQLAlchemy(app) 
 
-# db.create_all()
-# # Remove tracking modifications
-# app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') or "sqlite:///db.sqlite"
-# app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL', '') 
+# or "sqlite:///db.sqlite"
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# db = SQLAlchemy(app)
+db = SQLAlchemy(app)
 # Pet = create_classes(db)
 
 
@@ -38,7 +37,7 @@ app = Flask(__name__)
 #################################################
 # Database Setup
 #################################################
-engine = create_engine('sqlite:///housing.db', echo=False)
+engine = create_engine(db, echo=False)
 
 #################################################
 # INITIAL RUN ONLY - create database tables
@@ -76,7 +75,7 @@ def load():
 #################################################
 # Storing Data in SQL Tables
 #################################################  
-  engine = create_engine('sqlite:///housingnew.db', echo=False)
+  # engine = create_engine('sqlite:///housingnew.db', echo=False)
   connection = engine.connect()
 
   data1.to_sql('clusterA',  if_exists='replace', index=False, con=connection)

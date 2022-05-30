@@ -1,40 +1,17 @@
 #Import dependencies into juputer notebook
 import numpy as np
 import pandas as pd
-# import seaborn as sb
-
 from sklearn.linear_model import LinearRegression
 from sklearn.decomposition import PCA
 from sklearn.manifold import TSNE
 from sklearn.cluster import KMeans
-
-
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_squared_error, mean_absolute_error , r2_score
 
-# import pickle
-# # from flask import Flask, render_template, redirect, jsonify
-# import json
-# # from bson import json_util
-# # import plotly.express as px
-
-# #from models import create_classes
-# import sqlalchemy
-# from sqlalchemy.ext.automap import automap_base
-# from sqlalchemy.orm import Session, sessionmaker, scoped_session
-# from sqlalchemy import create_engine, inspect, func
-# from config import p_key
-# import os
-# from flask_sqlalchemy import SQLAlchemy
-# from flask_migrate import Migrate
-
-
-# import scipy.stats as st
-# from scipy.stats import linregress
 
 def data_info():
-
+    pd.options.mode.chained_assignment = None
     df = pd.read_csv("Resources/RealEstate_Georgia.csv")
     df_gdp = pd.read_csv("Resources/GAgdpbycounty2020.csv")
     df_income = pd.read_csv("Resources/ACSST5Y2020.S1901_data_with_overlays_2022-05-17T173521.csv")
@@ -43,7 +20,7 @@ def data_info():
     gdp_county_column = df_gdp2["county"].str.split(",", n =1, expand = True) 
     df_gdp2["county"]= gdp_county_column[0]
     df_gdp_clean = df_gdp2[2:].reset_index(drop=True)
-    #Census columns = S1901_C03_012E, S1901_C04_001E
+    
     cleandata= df_income[['NAME', 'S1901_C03_012E','S1901_C04_012E']]
     #Renaming the columns
     cleandata_transformed = cleandata.rename(columns={"NAME": "name",
@@ -60,7 +37,8 @@ def data_info():
     #Cleaning Data
     df.drop_duplicates()
     df_cln = df.loc[(df.is_bankOwned == False) & (df.is_forAuction == False)& (df.homeType != 'LOT')]
-    df_cln['Month'] = df_cln['datePostedString'].str[0].astype('int')
+    df_cln.loc[:,'Month'] = df_cln.loc[:,'datePostedString'].str[0].astype(int)
+    #df_cln['Month'] = df_cln['datePostedString'].str[0].astype('int')
     df_cln = df_cln.loc[(df_cln.yearBuilt < 2022) & (df_cln.yearBuilt > 1800) ]
     drop_columns = ['Unnamed: 0', 'id', 'stateId', 'countyId', 'cityId', 'country',
         'is_bankOwned', 'is_forAuction', 'event', 'time','state',
@@ -186,8 +164,6 @@ def line_info(df_merge):
 
 
     x_la = X["livingArea"]
-    # (la_slope, la_int, la_r, la_p, la_std_err) = linregress(x_la, y)
-    # fit_la = la_slope*x_la + la_int
 
     xl = np.array(x_la).reshape((-1,1))
     yl = np.array(y)
@@ -197,10 +173,8 @@ def line_info(df_merge):
     fit_la = m*x_la + la_int
 
 
-
     x_yb = X["bathrooms"]
-    # (yb_slope, yb_int, yb_r, yb_p, yb_std_err) = linregress(x_yb, y)
-    # fit_yb = yb_slope*x_yb + yb_int
+
     xb = np.array(x_yb).reshape((-1,1))
     yb = np.array(y)
     regb = LinearRegression().fit(xb, yb)

@@ -5,7 +5,7 @@ import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
 from sqlalchemy import create_engine, func
-from config import p_key
+# from config import p_key
 # from flask_sqlalchemy import SQLAlchemy
 import os
 import psycopg2
@@ -17,8 +17,9 @@ import ml_script
 #################################################
 app = Flask(__name__)
 
-default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/housingnew'
-database_path = os.getenv('DATABASE_URL', default_database_path)
+# default_database_path= f'postgresql://postgres:{p_key}@localhost:5432/housingnew'
+database_path = os.getenv('DATABASE_URL')
+#, default_database_path)
 
 # database_path = os.environ['DATABASE_URL']
 # app.config["SQLALCHEMY_DATABASE_URI"] = database_path
